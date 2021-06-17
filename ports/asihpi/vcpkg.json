@@ -1,0 +1,16 @@
+{
+    "name": "asihpi",
+    "version": "4.20.19",
+    "port-version": 0,
+    "description": [
+      "AudioScience HPI, proprietary low level API, developed that is buffer based.",
+      "Supported on Windows 10, 7 and Server 2008, Server 2012, Server 2016 and Linux."
+    ],
+    "homepage": "https://www.audioscience.com/internet/download/sdk/sdk.htm",
+    "documentation": "https://www.audioscience.com/internet/download/sdk/hpi_usermanual_html/html/index.html",
+    "maintainers": [
+      "Greisby <greisberger@zenon-media-com>"
+    ],
+    "supports": "windows",
+    "license": "MIT"
+}

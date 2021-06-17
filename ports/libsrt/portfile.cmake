@@ -7,6 +7,7 @@ vcpkg_from_github(
     PATCHES
         fix-dependency-install.patch
         fix-static.patch
+		rename_md5_init.patch
 )
 
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "static" KEYSTONE_BUILD_STATIC)
@@ -27,6 +28,7 @@ vcpkg_cmake_configure(
         -DENABLE_SHARED=${KEYSTONE_BUILD_SHARED}
         -DENABLE_UNITTESTS=OFF
         -DUSE_OPENSSL_PC=OFF
+        -DENABLE_STDCXX_SYNC=ON
 )
 
 vcpkg_cmake_install()

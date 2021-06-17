@@ -23,6 +23,7 @@ vcpkg_cmake_configure(
         -DWITH_TLS=ON
         -DWITH_TLS_PSK=ON
         -DWITH_THREADING=ON
+		-DWITH_STATIC_LIBRARIES=ON
         -DDOCUMENTATION=OFF
         -DWITH_PLUGINS=OFF
         -DWITH_CJSON=OFF

@@ -143,6 +143,14 @@
           "name": "ffmpeg",
           "default-features": false,
           "features": [
+            "srt"
+          ],
+          "platform": "!uwp"
+        },
+        {
+          "name": "ffmpeg",
+          "default-features": false,
+          "features": [
             "ssh"
           ],
           "platform": "!(uwp | arm)"

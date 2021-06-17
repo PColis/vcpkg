@@ -13,6 +13,7 @@
       <RuntimeLibrary Condition="'${VCPKG_CRT_LINKAGE}|$(Configuration)' == 'static|Release'">MultiThreaded</RuntimeLibrary>
       <RuntimeLibrary Condition="'${VCPKG_CRT_LINKAGE}|$(Configuration)' == 'dynamic|Debug'">MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeLibrary Condition="'${VCPKG_CRT_LINKAGE}|$(Configuration)' == 'dynamic|Release'">MultiThreadedDLL</RuntimeLibrary>
+      <SDLCheck>false</SDLCheck>
     </CLCompile>
     <Link>
       <!-- Required Libs -->

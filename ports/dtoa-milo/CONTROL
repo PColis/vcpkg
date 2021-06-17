@@ -1,0 +1,4 @@
+Source: dtoa-milo
+Version: 1.0.0
+Description: Fast IEEE-754 floating point to ASCII string conversion
+Homepage: https://github.com/miloyip/dtoa-benchmark

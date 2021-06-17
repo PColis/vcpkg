@@ -38,6 +38,8 @@ if(VCPKG_TARGET_IS_WINDOWS AND NOT VCPKG_TARGET_IS_MINGW)
     foreach(vcxproj ${vcxprojs})
         file(READ "${SOURCE_PATH}/vc_solution/${vcxproj}" vcxproj_con)
         
+		string(REPLACE "ThreadedDLL</RuntimeLibrary>" "ThreadedDLL</RuntimeLibrary><DebugInformationFormat>None</DebugInformationFormat>" vcxproj_con "${vcxproj_con}")
+
         if(NOT VCPKG_CRT_LINKAGE STREQUAL dynamic)
             string(REPLACE "DLL</RuntimeLibrary>" "</RuntimeLibrary>" vcxproj_con "${vcxproj_con}")
         endif()

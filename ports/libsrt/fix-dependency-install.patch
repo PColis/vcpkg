@@ -1,6 +1,15 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
+@@ -756,7 +756,7 @@
+ 		endif ()
+ 
+ 		foreach(EXHAND C CE SE)
+-			foreach(COMPAT 1 2)
++			foreach(COMPAT 1 2 3)
+ 				list(APPEND PTHREAD_W32_LIBRARY "pthread${PTHREAD_COMPILER_FLAG}${EXHAND}${PTHREAD_LIB_SUFFIX}${COMPAT}")
+ 			endforeach()
+ 		endforeach()
 @@ -1008,6 +1008,7 @@ set (INSTALL_SHARED_DIR ${CMAKE_INSTALL_LIBDIR})
  if (CYGWIN)
  	set (INSTALL_SHARED_DIR ${CMAKE_INSTALL_BINDIR})
