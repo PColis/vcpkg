@@ -24,6 +24,7 @@ vcpkg_from_github(
         ${PATCHES}
         0018-libaom-Dont-use-aom_codec_av1_dx_algo.patch
         0019-libx264-Do-not-explicitly-set-X264_API_IMPORTS.patch
+		0099-disable-srt-version-check.patch
 )
 
 if (SOURCE_PATH MATCHES " ")
@@ -373,6 +374,12 @@ if("speex" IN_LIST FEATURES)
     set(OPTIONS "${OPTIONS} --enable-libspeex")
 else()
     set(OPTIONS "${OPTIONS} --disable-libspeex")
+endif()
+
+if("srt" IN_LIST FEATURES)
+    set(OPTIONS "${OPTIONS} --enable-libsrt")
+else()
+    set(OPTIONS "${OPTIONS} --disable-libsrt")
 endif()
 
 if("ssh" IN_LIST FEATURES)

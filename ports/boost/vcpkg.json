@@ -116,10 +116,6 @@
     "boost-optional",
     "boost-outcome",
     "boost-parameter",
-    {
-      "name": "boost-parameter-python",
-      "platform": "!emscripten"
-    },
     "boost-pfr",
     "boost-phoenix",
     "boost-poly-collection",
@@ -136,10 +132,6 @@
     "boost-property-tree",
     "boost-proto",
     "boost-ptr-container",
-    {
-      "name": "boost-python",
-      "platform": "!uwp & !emscripten & !ios & !android"
-    },
     "boost-qvm",
     "boost-random",
     "boost-range",

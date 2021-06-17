@@ -1,0 +1,20 @@
+--- a/common/asiosys.h
++++ b/common/asiosys.h
+@@ -10,7 +10,7 @@
+ 		#define LINUX 0
+ 		#define BEOS 0
+ 
+-		#define NATIVE_INT64 0
++		#define NATIVE_INT64 1
+ 		#define IEEE754_64FLOAT 1
+ 	
+ 	#elif BEOS
+--- a/common/iasiodrv.h
++++ b/common/iasiodrv.h
+@@ -1,5 +1,6 @@
+ #include "asiosys.h"
+ #include "asio.h"
++#include <Unknwn.h>
+ 
+ /* Forward Declarations */ 
+ 

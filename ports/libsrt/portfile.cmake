@@ -28,6 +28,7 @@ vcpkg_cmake_configure(
         -DENABLE_STATIC=${BUILD_STATIC}
         -DENABLE_UNITTESTS=OFF
         -DUSE_OPENSSL_PC=OFF
+        -DENABLE_STDCXX_SYNC=ON
 )
 
 vcpkg_cmake_install()

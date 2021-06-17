@@ -1,0 +1,195 @@
+--- a/source/SoundTouch/TDStretch.h
++++ b/source/SoundTouch/TDStretch.h
+@@ -42,6 +42,23 @@
+ #include "RateTransposer.h"
+ #include "FIFOSamplePipe.h"
+ 
++// Multi-channel patch
++#include <map>
++#include <list>
++#include <intrin.h>
++#pragma intrinsic(_InterlockedCompareExchange)
++#pragma intrinsic(_mm_pause)
++class ZSimpleLock {
++public:
++	inline ZSimpleLock() = default;
++	inline virtual ~ZSimpleLock() = default;
++	inline void Lock(const char* = nullptr) const { while (_InterlockedCompareExchange(&m_lLock, 1, 0) != 0) _mm_pause(); }
++	inline void Unlock() const { m_lLock = 0; }
++private:
++	volatile mutable long m_lLock = 0;
++};
++// End of multi-channel patch
++
+ namespace soundtouch
+ {
+ 
+@@ -102,6 +119,23 @@
+ /// sound.
+ class TDStretch : public FIFOProcessor
+ {
++// Multi-channel patch
++private:
++	__int64 m_i64ID = 0;
++
++	typedef struct _MultiChannelPatch {
++		TDStretch* m_pMaster = nullptr;
++		std::map<TDStretch*, std::list<int>> m_Instances;
++	} MultiChannelPatch;
++
++	static ZSimpleLock m_CriticalSection;
++	static std::map<__int64, MultiChannelPatch> m_MultiChannelPatches;
++
++public:
++	void InitMultiChannelPatch(__int64 i64ID);
++	void ReleaseMultiChannelPatch();
++// End of multi-channel patch
++
+ protected:
+     int channels;
+     int sampleReq;
+--- a/source/SoundTouch/TDStretch.cpp
++++ b/source/SoundTouch/TDStretch.cpp
+@@ -78,6 +78,11 @@
+     { 121,  114,   97,  114,   98,  105,  108,   32,  104,   99,  117,  111,
+       116,  100,  110,  117,  111,  115,    0,    0,    0,    0,    0,   0}};
+ 
++// Multi-channel patch
++ZSimpleLock TDStretch::m_CriticalSection;
++std::map<__int64, TDStretch::MultiChannelPatch> TDStretch::m_MultiChannelPatches;
++// End of multi-channel patch
++
+ /*****************************************************************************
+  *
+  * Implementation of the class 'TDStretch'
+@@ -113,9 +118,51 @@
+ 
+ TDStretch::~TDStretch()
+ {
++	// Multi-channel patch
++	ReleaseMultiChannelPatch();
++	// End of multi-channel patch
++
+     delete[] pMidBufferUnaligned;
+ }
+ 
++// Multi-channel patch
++void TDStretch::InitMultiChannelPatch(__int64 i64ID) {
++	ReleaseMultiChannelPatch();
++	if (i64ID == 0) return;
++
++	m_CriticalSection.Lock();
++	m_i64ID = i64ID;
++	auto itPatch = m_MultiChannelPatches.find(m_i64ID);
++	if (itPatch != m_MultiChannelPatches.end()) {
++		auto itInstance = itPatch->second.m_Instances.find(this);
++		if (itInstance != itPatch->second.m_Instances.end()) itInstance->second.clear();
++		else itPatch->second.m_Instances.emplace(this, std::list<int>());
++	}
++	else {
++		MultiChannelPatch patch;
++		patch.m_pMaster = nullptr;
++		patch.m_Instances.emplace(this, std::list<int>());
++		m_MultiChannelPatches.emplace(i64ID, patch);
++	}
++	m_CriticalSection.Unlock();
++}
++
++void TDStretch::ReleaseMultiChannelPatch() {
++	if (m_i64ID == 0) return;
++
++	m_CriticalSection.Lock();
++	auto itPatch = m_MultiChannelPatches.find(m_i64ID);
++	if (itPatch != m_MultiChannelPatches.end()) {
++		if (itPatch->second.m_pMaster == this)
++			itPatch->second.m_pMaster = nullptr;
++		itPatch->second.m_Instances.erase(this);
++		if (itPatch->second.m_Instances.empty())
++			m_MultiChannelPatches.erase(m_i64ID);
++	}
++	m_CriticalSection.Unlock();
++}
++// End of multi-channel patch
++
+ 
+ 
+ // Sets routine control parameters. These control are certain time constants
+@@ -301,6 +348,28 @@
+ // value over the overlapping period
+ int TDStretch::seekBestOverlapPositionFull(const SAMPLETYPE *refPos) 
+ {
++	// Multi-channel patch
++	if (channels == 1) {
++		m_CriticalSection.Lock();
++		auto itPatch = m_MultiChannelPatches.find(m_i64ID);
++		if (itPatch != m_MultiChannelPatches.end()) {
++			if (itPatch->second.m_pMaster == nullptr) itPatch->second.m_pMaster = this;
++			if (this != itPatch->second.m_pMaster) {
++				auto itInstance = itPatch->second.m_Instances.find(this);
++				if (itInstance != itPatch->second.m_Instances.end()) {
++					if (!itInstance->second.empty()) {
++						int nBestOffset = itInstance->second.front();
++						itInstance->second.pop_front();
++						m_CriticalSection.Unlock();
++						return nBestOffset;
++					}
++				}
++			}
++		}
++		m_CriticalSection.Unlock();
++	}
++	// End of multi-channel patch
++
+     int bestOffs;
+     double bestCorr;
+     int i;
+@@ -356,6 +425,21 @@
+     // clear cross correlation routine state if necessary (is so e.g. in MMX routines).
+     clearCrossCorrState();
+ 
++	// Multi-channel patch
++	if (channels == 1) {
++		m_CriticalSection.Lock();
++		auto itPatch = m_MultiChannelPatches.find(m_i64ID);
++		if (itPatch != m_MultiChannelPatches.end() && itPatch->second.m_pMaster == this) {
++			for (auto& itInstance : itPatch->second.m_Instances) {
++				if (this != itInstance.first) {
++					itInstance.second.push_back(bestOffs);
++				}
++			}
++		}
++		m_CriticalSection.Unlock();
++	}
++	// End of multi-channel patch
++
+     return bestOffs;
+ }
+ 
+
+--- a/include/SoundTouch.h
++++ b/include/SoundTouch.h
+@@ -217,6 +217,9 @@
+     /// Get SoundTouch library version Id
+     static uint getVersionId();
+ 
++	/// Zenon-Media patch to synchronize multiple channels
++	void InitMultiChannelPatch(__int64 i64ID);
++
+     /// Sets new rate control value. Normal rate = 1.0, smaller values
+     /// represent slower rate, larger faster rates.
+     void setRate(double newRate);
+--- a/source/SoundTouch/SoundTouch.cpp
++++ b/source/SoundTouch/SoundTouch.cpp
+@@ -134,6 +134,12 @@
+ }
+ 
+ 
++/// Zenon-Media patch to synchronize multiple channels
++void SoundTouch::InitMultiChannelPatch(__int64 i64ID) {
++	if (pTDStretch != nullptr) pTDStretch->InitMultiChannelPatch(i64ID);
++}
++
++
+ // Sets the number of channels, 1 = mono, 2 = stereo
+ void SoundTouch::setChannels(uint numChannels)
+ {

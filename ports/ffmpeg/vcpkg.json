@@ -135,6 +135,14 @@
           "name": "ffmpeg",
           "default-features": false,
           "features": [
+            "srt"
+          ],
+          "platform": "!uwp"
+        },
+        {
+          "name": "ffmpeg",
+          "default-features": false,
+          "features": [
             "ssh"
           ],
           "platform": "!(uwp | arm)"
@@ -546,6 +554,12 @@
       "description": "Speex de/encoding via libspeex",
       "dependencies": [
         "speex"
+      ]
+    },
+    "srt": {
+      "description": "SRT protocol via libsrt",
+      "dependencies": [
+        "libsrt"
       ]
     },
     "ssh": {

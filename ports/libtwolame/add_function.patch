@@ -1,0 +1,28 @@
+--- a/libtwolame/twolame.h
++++ b/libtwolame/twolame.h
+@@ -853,6 +853,14 @@
+ TL_API int twolame_get_quick_count(twolame_options * glopts);
+
+
++/** Get the number of PCM samples buffered, but not yet encoded.
++ *
++ *	\param glopts          pointer to twolame options pointer
++ *	\return                number of samples hold by encoder
++ */
++TL_API int twolame_get_mf_samples_to_encode(twolame_options * glopts);
++
++
+ /** Enable/Disable the Eureka 147 DAB extensions for MP2.
+  *
+  *  Default: FALSE
+--- a/libtwolame/twolame.c
++++ b/libtwolame/twolame.c
+@@ -1003,3 +1003,8 @@
+ }
+
+ // vim:ts=4:sw=4:nowrap:
++
++int twolame_get_mf_samples_to_encode(twolame_options * glopts)
++{
++	return glopts?glopts->samples_in_buffer:0;
++}

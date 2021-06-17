@@ -6,6 +6,7 @@ vcpkg_from_github(
     HEAD_REF master
     PATCHES
         vcpkg.patch
+        streaming.patch
 )
 
 vcpkg_cmake_configure(

@@ -7,8 +7,9 @@ vcpkg_from_github(
     PATCHES
         vcpkg.patch
         drogon_config.patch
-        static-brotli.patch
+        # static-brotli.patch
         use-libmariadb.patch
+        streaming.patch
 )
 
 vcpkg_check_features(

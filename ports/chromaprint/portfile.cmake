@@ -7,12 +7,18 @@ vcpkg_from_github(
         fix_lrintf_detection.patch # submitted upstream as https://github.com/acoustid/chromaprint/pull/85
 )
 
+string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" VCPKG_BUILD_SHARED_LIBS)
+
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
     PREFER_NINJA
+    OPTIONS
+        -DBUILD_SHARED_LIBS=${VCPKG_BUILD_SHARED_LIBS}
 )
+
 vcpkg_install_cmake()
 vcpkg_fixup_pkgconfig()
+vcpkg_copy_pdbs()
 
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
 file(INSTALL ${SOURCE_PATH}/LICENSE.md DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
