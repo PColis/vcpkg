@@ -64,7 +64,6 @@ vcpkg install qt5:x64-windows-static
 title Building pkgconf
 vcpkg install pkgconf:x64-windows-static
 
-
 title Building MFC ffmpeg
 REM vcpkg install ffmpeg[core,aom,avcodec,avdevice,avfilter,avformat,avresample,bzip2,dav1d,fdk-aac,gpl,ilbc,lzma,modplug,mp3lame,nonfree,nvcodec,opencl,openh264,openjpeg,openssl,opus,postproc,snappy,soxr,speex,ssh,srt,swresample,swscale,theora,vorbis,vpx,webp,x264,x265,zlib]:x64-windows-mfc-static
 vcpkg install ffmpeg[all-nonfree]:x64-windows-mfc-static
