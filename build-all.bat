@@ -22,7 +22,7 @@ vcpkg install otl:x64-windows-static
 title Building rapidxml
 vcpkg install rapidxml:x64-windows-static
 title Building spdlog
-vcpkg install spdlog:x64-windows-static
+vcpkg install spdlog[core,wchar]:x64-windows-static
 title Building taglib
 vcpkg install taglib:x64-windows-static
 title Building lua
@@ -58,9 +58,11 @@ vcpkg install asihpi:x64-windows-static
 title Building boost
 vcpkg install boost:x64-windows-static
 title Building drogon
-vcpkg install drogon[ctl]:x64-windows-static
+vcpkg install drogon[core,ctl]:x64-windows-static
 title Building qt5
 vcpkg install qt5:x64-windows-static
+title Building pkgconf
+vcpkg install pkgconf:x64-windows-static
 
 
 title Building MFC ffmpeg
@@ -87,7 +89,7 @@ vcpkg install otl:x64-windows-mfc-static
 title Building MFC rapidxml
 vcpkg install rapidxml:x64-windows-mfc-static
 title Building MFC spdlog
-vcpkg install spdlog:x64-windows-mfc-static
+vcpkg install spdlog[core,wchar]:x64-windows-mfc-static
 title Building MFC taglib
 vcpkg install taglib:x64-windows-mfc-static
 title Building MFC lua
@@ -123,8 +125,10 @@ vcpkg install asihpi:x64-windows-mfc-static
 title Building MFC boost
 REM vcpkg install boost:x64-windows-mfc-static
 title Building MFC drogon
-REM vcpkg install drogon[ctl]:x64-windows-mfc-static
+vcpkg install drogon[core,ctl]:x64-windows-mfc-static
 title Building MFC qt5
 vcpkg install qt5:x64-windows-mfc-static
+title Building MFC pkgconf
+vcpkg install pkgconf:x64-windows-mfc-static
 
 title Building done

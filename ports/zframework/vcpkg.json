@@ -1,0 +1,74 @@
+{
+  "name": "zframework",
+  "version-semver": "1.0.0",
+  "port-version": 0,
+  "description": [
+    "Zenon-Media internal framework",
+    "This is a wrapper packages, to install ZFramework dependencies, with a",
+    "cmake find module that searches for ZFramework cmake modules in either:",
+    "  - D:\\Local_libs\\share\\cmake (Greisby's sandbox) or",
+    "  - \\\\Server-DEV\\Development\\Releases\\MFC_VS2019\\share\\cmake (Windows) or",
+    "  - /usr/local/Zenon-Media/share/cmake (Linux)"
+  ],
+  "homepage": "http://www.zenon-media.com",
+  "documentation": "http://www.zenon-media.com",
+  "license": null,
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    },
+    {
+      "name": "asihpi",
+      "platform": "windows"
+    },
+    {
+      "name": "asiosdk",
+      "platform": "windows"
+    },
+    "cpr",
+    {
+      "name": "drogon",
+      "features": [ "ctl" ]
+    },
+    "dtoa-milo",
+    {
+      "name": "ffmpeg",
+      "platform": "windows",
+      "features": [ "all-nonfree" ]
+    },
+    {
+      "name": "ffmpeg",
+      "platform": "!windows",
+      "features": [ "avcodec", "avdevice", "avfilter", "avformat", "avresample", "bzip2", "freetype", "iconv", "lzma", "mp3lame", "openjpeg", "opus", "snappy", "soxr", "speex", "swresample", "swscale", "theora", "vorbis", "vpx", "webp", "xml2", "zlib", "alsa", "sdl2", "ass", "fontconfig", "fribidi", "modplug", "opencl", "openh264", "ilbc", "ssh", "aom", "dav1d", "nvcodec",
+	    "gpl", "postproc", "x264", "x265", "fdk-aac", "nonfree", "openssl" ]
+    },
+    "jwt-cpp",
+    "libzippp",
+    "libsamplerate",
+    {
+      "name": "lua53",
+      "platform": "windows"
+    },
+    {
+      "name": "mosquitto",
+      "platform": "windows"
+    },
+    "otl",
+    "soundtouch",
+    {
+      "name": "spdlog",
+      "platform": "!windows"
+    },
+    {
+      "name": "spdlog",
+      "platform": "windows",
+      "features": [ "wchar" ]
+    },
+    "taglib"
+  ]
+}

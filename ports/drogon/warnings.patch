@@ -1,0 +1,31 @@
+--- a/orm_lib/inc/drogon/orm/SqlBinder.h
++++ b/orm_lib/inc/drogon/orm/SqlBinder.h
+@@ -372,14 +372,13 @@
+             switch (sizeof(T))
+             {
+                 case 2:
+-                    *std::static_pointer_cast<uint16_t>(obj) = htons(parameter);
++                    *std::static_pointer_cast<uint16_t>(obj) = htons((uint16_t)parameter);
+                     break;
+                 case 4:
+-                    *std::static_pointer_cast<uint32_t>(obj) = htonl(parameter);
++                    *std::static_pointer_cast<uint32_t>(obj) = htonl((uint32_t)parameter);
+                     break;
+                 case 8:
+-                    *std::static_pointer_cast<uint64_t>(obj) =
+-                        htonll(parameter);
++                    *std::static_pointer_cast<uint64_t>(obj) = htonll((uint64_t)parameter);
+                     break;
+                 case 1:
+                 default:
+--- a/lib/inc/drogon/utils/Utilities.h
++++ b/lib/inc/drogon/utils/Utilities.h
+@@ -396,7 +396,7 @@
+     }
+     std::string l{p};
+     std::transform(p.begin(), p.end(), l.begin(), [](unsigned char c) {
+-        return tolower(c);
++        return (char)tolower(c);
+     });
+     if (l == "true")
+     {

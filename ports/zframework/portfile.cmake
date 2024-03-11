@@ -1,0 +1,17 @@
+set(VCPKG_POLICY_EMPTY_INCLUDE_FOLDER enabled)
+if(WIN32)
+  file(COPY "${VCPKG_ROOT_DIR}/ports/${PORT}/${PORT}Config.cmake" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}/")
+else(WIN32)
+  # Linux: Fix case sensitivity - temporary, the cmake file should be renamed
+  file(COPY "${VCPKG_ROOT_DIR}/ports/${PORT}/ZFrameworkConfig.cmake" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}/")
+  if(NOT "${PORT}" STREQUAL "ZFramework")
+    file(CREATE_LINK "${CURRENT_PACKAGES_DIR}/share/${PORT}/ZFrameworkConfig.cmake" "${CURRENT_PACKAGES_DIR}/share/${PORT}/${PORT}Config.cmake" SYMBOLIC)
+  endif()
+endif(WIN32)
+
+file(WRITE  "${CURRENT_PACKAGES_DIR}/share/${PORT}/usage" "The package ${PORT} provides CMake targets:\n")
+file(APPEND "${CURRENT_PACKAGES_DIR}/share/${PORT}/usage" "    find_package(${PORT} CONFIG REQUIRED)\n")
+file(APPEND "${CURRENT_PACKAGES_DIR}/share/${PORT}/usage" "    target_link_libraries(main Zenon::${PORT})\n")
+file(APPEND "${CURRENT_PACKAGES_DIR}/share/${PORT}/usage" "and, if needed:\n")
+file(APPEND "${CURRENT_PACKAGES_DIR}/share/${PORT}/usage" "    target_link_libraries(main \${FFMPEG_LIBRARIES})\n")
+file(WRITE  "${CURRENT_PACKAGES_DIR}/share/${PORT}/copyright" "(c) Zenon-Media GmbH")

@@ -2,7 +2,7 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index cb7c5f042..a5bc0b942 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -71,7 +71,7 @@ if(CPR_ENABLE_CPPCHECK)
+@@ -97,7 +97,7 @@ if(CPR_ENABLE_CPPCHECK)
      include(cmake/cppcheck.cmake)
  endif()
  

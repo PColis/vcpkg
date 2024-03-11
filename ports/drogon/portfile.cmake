@@ -7,6 +7,8 @@ vcpkg_from_github(
     PATCHES
         vcpkg.patch
         drogon_config.patch
+        regex_methods.patch
+        warnings.patch
 )
 
 vcpkg_check_features(
